@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>
+      MySql helper library that uses fluent interface to backup/restore MySql Database to/from different storage locations such as Local, Azure Blob, S3, DropBox, OneDrive, DO spaces, etc. storage.
+      It's using MySqlBackup.NET.MySqlConnector as core library to perform work of backup/restore
+    </Description>
+    <PackageTags>mysqlbackup mysql fluent sinks</PackageTags>
+    <PackageProjectUrl>https://vpetkovic.info</PackageProjectUrl>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>2020</Copyright>
+    <Version>1.0.2</Version>
+    <Authors>Vojislav Petkovic</Authors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.6" />
+    <PackageReference Include="MySqlConnector" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CL.Sinks.Common\CL.Sinks.Common.csproj" />
+  </ItemGroup>
+
+</Project>
