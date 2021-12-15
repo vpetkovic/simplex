@@ -9,7 +9,7 @@
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2021</Copyright>
-    <Version>1.0.18</Version>
+    <Version>2.0.0</Version>
     <Authors>Vojislav Petkovic</Authors>
   </PropertyGroup>
 
