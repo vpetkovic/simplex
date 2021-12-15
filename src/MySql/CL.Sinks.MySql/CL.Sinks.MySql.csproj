@@ -19,7 +19,5 @@
     <PackageReference Include="MySqlConnector" Version="2.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CL.Sinks.Common\CL.Sinks.Common.csproj" />
-  </ItemGroup>
+
 </Project>

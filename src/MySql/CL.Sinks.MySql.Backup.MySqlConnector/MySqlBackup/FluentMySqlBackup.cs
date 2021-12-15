@@ -1,4 +1,6 @@
-﻿namespace CL.Sinks.MySql.Backup.MySqlConnector
+﻿using CL.Sinks.Common;
+
+namespace CL.Sinks.MySql.Backup.MySqlConnector
 {
     public sealed partial class FluentMySqlBackup
     {
