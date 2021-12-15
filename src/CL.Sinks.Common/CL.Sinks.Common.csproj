@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Common library for CL.Sinks class libraries</Description>
+    <PackageTags>sinks</PackageTags>
+    <PackageProjectUrl>https://vpetkovic.info</PackageProjectUrl>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>2021</Copyright>
+    <Version>1.0.1</Version>
+    <Authors>Vojislav Petkovic</Authors>
   </PropertyGroup>
 
   <ItemGroup>
