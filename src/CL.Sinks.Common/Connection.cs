@@ -10,7 +10,8 @@ namespace CL.Sinks.Common
         /// <summary>
         /// Converts the zero Datetime to NULL
         /// </summary>
-        public bool ConvertZeroDateTime { get; set; } = true;
+        /// <remarks>For MySql Only</remarks>
+        public bool ConvertZeroDateTime { get; set; } = false;
         public int? ConnectionTimeout { get; set; } = null;
         public bool IsDefault { get; set; } = false;
 

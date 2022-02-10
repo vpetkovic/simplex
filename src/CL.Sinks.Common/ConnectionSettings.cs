@@ -45,7 +45,7 @@ namespace CL.Sinks.Common
             if (connection is null) throw new ArgumentNullException($"{nameof(connection)} cannot be null.");
 
             _connections.Add(connection);
-        } // => throw new ArgumentNullException($"Either config or list of connections must be provided.");
+        }
         public ConnectionSettings(IConfiguration config)
         {
             if (config == null) throw new ArgumentNullException($"{nameof(config)} cannot be null. At least one must be provided.");
