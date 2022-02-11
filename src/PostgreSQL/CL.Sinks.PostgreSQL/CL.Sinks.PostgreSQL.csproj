@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Helper library for streamlined access to data via SP and queries using PostgreSQL data provider.</Description>
+        <Copyright>2022</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://vpetkovic.info</PackageProjectUrl>
+        <PackageTags>dapper PostgreSQL helpers</PackageTags>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <Version>1.0.1</Version>
+        <Authors>Vojislav Petkovic</Authors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\CL.Sinks.Common\CL.Sinks.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.123" />
+      <PackageReference Include="Npgsql" Version="6.0.3" />
+    </ItemGroup>
+
+</Project>
