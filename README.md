@@ -1,4 +1,4 @@
-*This library is dependent on Dapper as ORM but could be easily replaced or extend*
+*This library is dependent on Dapper as ORM but could be easily replaced or extended*
 
 [![Build status](https://dev.azure.com/vpetkovic/HelperTools/_apis/build/status/HelperTools/HelperTools)](https://dev.azure.com/vpetkovic/HelperTools/_build/latest?definitionId=3)
 | CL.Sinks Package | NuGet | Version | Stats |
