@@ -9,7 +9,7 @@
 
 
 ## The Simplest Usage
-This example demonstrates how simple and quick it is to connect and query your database database. This is most useful approach for quick testing, for more production ready scenarios consider using [more advanced ways](#advanced-and-production-ready-usage)
+This example demonstrates how simple and quick it is to connect and query your database. This is most useful approach for quick testing, for more production ready scenarios consider using [more advanced ways](#advanced-and-production-ready-usage)
 ``` c#
 var usersList = new MySqlDataAccess(new Connection { ConnectionString = "connection string"})
     .LoadFromSqlAsync<UserModel, dynamic>(@"select * from users where isActive = @status", new { status = true });
