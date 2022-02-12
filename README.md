@@ -1,5 +1,3 @@
-I created this library to provide a layer of abstraction to simplify and unify the way how you access db whether that is MSSQL, MySql or PostgreSql.
-
 *This library is dependent on Dapper as ORM but could be easily replaced or extend*
 
 [![Build status](https://dev.azure.com/vpetkovic/HelperTools/_apis/build/status/HelperTools/HelperTools)](https://dev.azure.com/vpetkovic/HelperTools/_build/latest?definitionId=3)
