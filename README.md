@@ -5,6 +5,7 @@
 | --------------- | --------------- | --------------- | --------------- |
 | SqlServer | [`Install-Package CL.Sinks.SqlServer`](https://www.nuget.org/packages/CL.Sinks.SqlServer/) | ![Nuget](https://img.shields.io/nuget/v/CL.Sinks.SqlServer) | ![Nuget](https://img.shields.io/nuget/dt/CL.Sinks.SqlServer?label=%20Downloads)
 | MySql | [`Install-Package CL.Sinks.MySql`](https://www.nuget.org/packages/CL.Sinks.MySql/) | ![Nuget](https://img.shields.io/nuget/v/CL.Sinks.MySql) | ![Nuget](https://img.shields.io/nuget/dt/CL.Sinks.MySql?label=%20Downloads) |
+| MySql Backup | [`Install-Package CL.Sinks.MySql.Backup`](https://www.nuget.org/packages/CL.Sinks.MySql.Backup/) | ![Nuget](https://img.shields.io/nuget/v/CL.Sinks.MySql.Backup) | ![Nuget](https://img.shields.io/nuget/dt/CL.Sinks.MySql.Backup?label=%20Downloads) |
 | PostgreSql | [`Install-Package CL.Sinks.PostgreSql`](https://www.nuget.org/packages/CL.Sinks.PostgreSql/) | ![Nuget](https://img.shields.io/nuget/v/CL.Sinks.PostgreSql) | ![Nuget](https://img.shields.io/nuget/dt/CL.Sinks.PostgreSql?label=%20Downloads)
 
 
@@ -106,6 +107,41 @@ var collection = await singleConnection.LoadFromSqlAsync<string, dynamic>("show 
 // Using other registered connection 
 var db2Conn = db.ConnectionSettings.GetConnectionStringByName("MySqlDb2");
 var collection = await multipleConnections.LoadFromSqlAsync<string, dynamic>("show databases", new {}, db2Conn);
+```
+
+## Extensions
+
+### Fluent Database Backup Extension
+
+Right now it is only supporting MySql backup but soon I will extend support for other database sinks and storage options ([choose priority](https://github.com/vpetkovic/CL.Sinks/discussions/8)) as well add restore functionality. 
+*I am debating whether or not to combine this functionality into one extension or split them into multiple, one extension per sink. Feel free to drop your thoughts [here](https://github.com/vpetkovic/CL.Sinks/discussions/6)*
+
+Anyways, in meantime if you use MySql database here's the sample usage
+
+[`Install-Package CL.Sinks.MySql.Backup`](https://www.nuget.org/packages/CL.Sinks.MySql.Backup/)
+
+``` c#
+
+var backupStatus = FluentMySqlBackup
+    .For(ConnectionStrings.Connections.FirstOrDefault(c => c.Name == "MySqlDb2"))
+    .Export(new string[] { "all" }) // individial db names or "all" for all databases on server
+    .ToLocalStorage(@"C:\users\vpetkovic\desktop")
+        .Save() // multiThreaded = false
+    .ToAzure("AzureBlobConnectionString")
+        .OnBlob("backup-db-container")
+        .Upload(true) // true = multiThreaded
+    .Done();
+```
+
+`backupStatus` will return an object
+
+``` json
+{
+    Exceptions: [],
+    TotalBackupTimeMilliseconds: decimal,
+    isSuccess: bool,
+    IsRunning: bool,
+}
 ```
 
 
