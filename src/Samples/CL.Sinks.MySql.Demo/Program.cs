@@ -14,7 +14,7 @@ IConfiguration config = new ConfigurationBuilder()
     .Build();
 
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<ISqlDataAccess, MySqlDataAccess>(provider => new MySqlDataAccess(new ConnectionSettings(config)))
+    .AddSingleton<ISqlDataAccess, MySqlDataAccess>(_ => new MySqlDataAccess(new ConnectionSettings(config)))
     .BuildServiceProvider();
 
 /// <summary>
@@ -37,13 +37,20 @@ var multipleConnections = new MySqlDataAccess(new ConnectionSettings(ConnectionS
 using var sp = serviceProvider.CreateScope();
 var db = sp.ServiceProvider.GetRequiredService<ISqlDataAccess>();
 
-// using Default connection 
-var dbList1 = await db.LoadFromSqlAsync<string, dynamic>("show databases", new {});
+// using Default connection
+var query = "show databases";
+var dbList1 = await db.LoadFromSqlAsync<string>(query);
+var single = await db.LoadFirstFromSqlAsync<string>(query);
 var dbList2 = await singleConnection.LoadFromSqlAsync<string, dynamic>("show databases", new { });
 
 // using other registered connections
 var secondaryConnection = db.ConnectionSettings.GetConnectionStringByName("Secondary");
-var dbList3 = await db.LoadFromSqlAsync<string, dynamic>("show databases", new { }, secondaryConnection);
-var dbList4 = await multipleConnections.LoadFromSqlAsync<string, dynamic>("show databases", new { }, secondaryConnection);
+var dbList3 = await db.LoadFromSqlAsync<string>(query, secondaryConnection);
+var dbList4 = await multipleConnections.LoadFromSqlAsync<string>("show databases", secondaryConnection);
+
+await db.SaveFromSqlAsync("INSERT INTO Persons (Name) Values (@Name);", new[]
+{
+    new {Name = "John"}, new {Name = "Jane"}
+});
 
 #endregion

@@ -15,13 +15,14 @@ IConfiguration config = new ConfigurationBuilder()
     .Build();
 
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<ISqlDataAccess, SqlDataAccess>(provider => new SqlDataAccess(new ConnectionSettings(config)))
+    .AddSingleton<ISqlDataAccess, SqlDataAccess>(_ => new SqlDataAccess(new ConnectionSettings(config)))
     .BuildServiceProvider();
 
 /// <summary>
 /// Instatiating single connection 
 /// </summary>
 var singleConnection = new SqlDataAccess(ConnectionStrings.Connections.FirstOrDefault());
+
 
 /// <summary>
 /// Instatiating multiple connections alongside some global settings such as connection timeout
@@ -38,13 +39,20 @@ var multipleConnections = new SqlDataAccess(new ConnectionSettings(ConnectionStr
 using var sp = serviceProvider.CreateScope();
 var db = sp.ServiceProvider.GetRequiredService<ISqlDataAccess>();
 
-// using Default connection 
-var dbList1 = await db.LoadFromSqlAsync<string, dynamic>("SELECT name FROM sys.databases", new { });
-var dbList2 = await singleConnection.LoadFromSqlAsync<string, dynamic>("SELECT name FROM sys.databases", new { });
+// using Default connection
+string query = "SELECT name FROM sys.databases";
+string queryFilter = "SELECT name FROM sys.databases Where name = @name";
+var dbList1 = await db.LoadFromSqlAsync<string>(query);
+var dbList1Filtered = await db.LoadFromSqlAsync<string, dynamic>(queryFilter, new {name = "master"});
+var dbList2 = await singleConnection.LoadFromSqlAsync<string>(query);
 
 // using other registered connections
 var secondaryConnection = db.ConnectionSettings.GetConnectionStringByName("Secondary");
-var dbList3 = await db.LoadFromSqlAsync<string, dynamic>("SELECT name FROM sys.databases", new { }, secondaryConnection);
-var dbList4 = await multipleConnections.LoadFromSqlAsync<string, dynamic>("SELECT name FROM sys.databases", new { }, secondaryConnection);
+var dbList3 = await db.LoadFromSqlAsync<string>(query, secondaryConnection);
+var dbList4 = await multipleConnections.LoadFromSqlAsync<string>(query, secondaryConnection);
 
+await db.SaveFromSqlAsync("INSERT INTO Persons (Name) Values (@Name);", new[]
+{
+    new {Name = "John"}, new {Name = "Jane"}
+});
 #endregion
