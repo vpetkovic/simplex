@@ -3,22 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CL.Sinks.SqlServer
 {
     public class SqlDataAccess : ISqlDataAccess, IDisposable
     {
-        private ConnectionSettings _connectionSettings { get; }
+        private readonly ConnectionSettings _connectionSettings;
         public ConnectionSettings ConnectionSettings => _connectionSettings;
-        public IDbConnection ActiveConnection { get; set; }
+        public IDbConnection ActiveConnection { get; private set; }
 
-        public SqlDataAccess(ConnectionSettings connectionSettings = null) => _connectionSettings = connectionSettings;
+        public SqlDataAccess(ConnectionSettings connectionSettings = null)
+        {
+            _connectionSettings = connectionSettings;
+            ActiveConnection = new SqlConnection(connectionSettings.DefaultConnection.ConnectionString);
+        }
 
         public SqlDataAccess(Connection connection)
-            => _connectionSettings = new ConnectionSettings(new Connection {IsDefault = true, ConnectionString = connection.ConnectionString, ConnectionTimeout = connection.ConnectionTimeout ?? 30, Name = "Default" });
-
+        {
+            _connectionSettings = new ConnectionSettings(new Connection(connection.ConnectionString, "Default") { IsDefault = true, ConnectionTimeout = connection.ConnectionTimeout ?? 30 });
+            ActiveConnection = new SqlConnection(connection.ConnectionString);
+        }
+        
         public IDbConnection SqlConnection<T>(T connection)
         {
             if (!(connection is Connection || connection is string) && connection != null)

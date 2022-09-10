@@ -7,6 +7,11 @@ namespace CL.Sinks.Common
     public interface ISqlDataAccess
     {
         ConnectionSettings ConnectionSettings { get; }
+        
+        /// <summary>
+        /// Upon class instantiation ActiveConnection is defaulted to default connection name. This can be changed by providing connection name in constructor of SqlConnection() method 
+        /// </summary>
+        /// <example>instantiatedConnections.SqlConnection("secondary")</example>
         IDbConnection ActiveConnection { get; }
 
         /// <summary>

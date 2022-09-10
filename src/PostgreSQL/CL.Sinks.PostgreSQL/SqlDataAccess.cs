@@ -1,25 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using CL.Sinks.Common;
-using Dapper;
 using Npgsql;
 
 namespace CL.Sinks.PostgreSQL
 {
     public class PostgreSqlDataAccess : ISqlDataAccess, IDisposable
     {
-        private ConnectionSettings _connectionSettings { get; }
-
+        private readonly ConnectionSettings _connectionSettings;
         public ConnectionSettings ConnectionSettings => _connectionSettings;
-        public IDbConnection ActiveConnection { get; set; }
+        public IDbConnection ActiveConnection { get; private set; }
 
-        public PostgreSqlDataAccess(ConnectionSettings connectionSettings = null) => _connectionSettings = connectionSettings;
+        public PostgreSqlDataAccess(ConnectionSettings connectionSettings = null)
+        {
+            _connectionSettings = connectionSettings;
+            ActiveConnection = new NpgsqlConnection(connectionSettings.DefaultConnection.ConnectionString);
+        }
 
-        public PostgreSqlDataAccess(Connection connection) =>
-            _connectionSettings = new ConnectionSettings(new Connection { IsDefault = true, ConnectionString = connection.ConnectionString, ConnectionTimeout = connection.ConnectionTimeout ?? 30, Name = "Default" });
+        public PostgreSqlDataAccess(Connection connection)
+        {
+            _connectionSettings = new ConnectionSettings(new Connection(connection.ConnectionString, "Default") { IsDefault = true, ConnectionTimeout = connection.ConnectionTimeout ?? 30 });
+            ActiveConnection = new NpgsqlConnection(connection.ConnectionString);
+        }
 
         public IDbConnection SqlConnection<T>(T connection)
         {

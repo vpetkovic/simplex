@@ -15,7 +15,7 @@ namespace CL.Sinks.Common
         /// <summary>
         /// Provide config If connection stings are already defined in appsettings.json
         /// </summary>
-        private IConfiguration _config = null;
+        private readonly IConfiguration _config;
         private List<Connection> GetConnections
         {
             get
@@ -26,11 +26,9 @@ namespace CL.Sinks.Common
                         .GetSection("ConnectionStrings")?
                         .GetChildren()?.AsEnumerable()
                         .Where(s => !string.IsNullOrEmpty(s.Value)).ToList()
-                        .ForEach(x => _connections.Add(new Connection
+                        .ForEach(x => _connections.Add(new Connection(x.Value, x.Key)
                         {
-                            Name = x.Key,
-                            ConnectionString = x.Value,
-                            IsDefault = x.Key.Equals("default", StringComparison.InvariantCultureIgnoreCase) ? true : false,
+                            IsDefault = x.Key.Equals("default", StringComparison.InvariantCultureIgnoreCase),
                             ConnectionTimeout = GlobalConnectionTimeout
                         }));
                 }
@@ -64,7 +62,8 @@ namespace CL.Sinks.Common
         public List<Connection> Connections => GetConnections;
         public int GlobalConnectionTimeout { get; set; } = 30;
         public Connection DefaultConnection => GetConnections?.FirstOrDefault(d => d.IsDefault) ?? throw new ArgumentException("Default connection is not set.");
-        public Connection GetConnectionStringByName(string ConnectionName) => Connections?.Where(n => n.Name.Equals(ConnectionName)).FirstOrDefault();
+        public Connection GetConnectionStringByName(string connectionName) 
+            => Connections?.Where(n => n.Name.Equals(connectionName)).FirstOrDefault();
         #endregion
     }
 
