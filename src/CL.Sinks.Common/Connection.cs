@@ -4,6 +4,14 @@ namespace CL.Sinks.Common
 {
     public class Connection
     {
+        public Connection() {}
+        public Connection(string connectionString) => ConnectionString = connectionString;
+
+        public Connection(string connectionString, string name)
+        {
+            ConnectionString = connectionString;
+            Name = name;
+        }
         public string Name { get; set; }
         public string ConnectionString { get; set; }
 

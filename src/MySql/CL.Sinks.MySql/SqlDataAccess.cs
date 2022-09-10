@@ -1,23 +1,29 @@
 ﻿using CL.Sinks.Common;
-using Dapper;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CL.Sinks.MySql
 {
     public class MySqlDataAccess : ISqlDataAccess, IDisposable
     {
-        private ConnectionSettings _connectionSettings;
+        private readonly ConnectionSettings _connectionSettings;
         public ConnectionSettings ConnectionSettings => _connectionSettings;
-        public IDbConnection ActiveConnection { get; set; }
+        public IDbConnection ActiveConnection { get; private set; }
 
-        public MySqlDataAccess(ConnectionSettings connectionSettings) => _connectionSettings = connectionSettings;
+        public MySqlDataAccess(ConnectionSettings connectionSettings)
+        {
+            _connectionSettings = connectionSettings;
+            ActiveConnection = new MySqlConnection(connectionSettings.DefaultConnection.ConnectionString);
+        }
 
-        public MySqlDataAccess(Connection connection) => _connectionSettings = new ConnectionSettings(new Connection { IsDefault = true, ConnectionString = connection.ConnectionString, ConnectionTimeout = connection.ConnectionTimeout ?? 30, Name = "Default" });
+        public MySqlDataAccess(Connection connection)
+        {
+            _connectionSettings = new ConnectionSettings(new Connection(connection.ConnectionString, "Default") { IsDefault = true, ConnectionTimeout = connection.ConnectionTimeout ?? 30 });
+            ActiveConnection = new MySqlConnection(connection.ConnectionString);
+        }
 
         public IDbConnection SqlConnection<T>(T connection)
         {
