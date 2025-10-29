@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-#region Instatiations Examples
+#region Instantiations Examples
 
 /// <summary>
 /// Using Dependency Injection and connections specified in appsettings.json
@@ -19,13 +19,13 @@ var serviceProvider = new ServiceCollection()
     .BuildServiceProvider();
 
 /// <summary>
-/// Instatiating single connection 
+/// Instantiating single connection
 /// </summary>
 var singleConnection = new SqlDataAccess(ConnectionStrings.Connections.FirstOrDefault());
 
 
 /// <summary>
-/// Instatiating multiple connections alongside some global settings such as connection timeout
+/// Instantiating multiple connections alongside some global settings such as connection timeout
 /// </summary>
 var multipleConnections = new SqlDataAccess(new ConnectionSettings(ConnectionStrings.Connections)
 {
