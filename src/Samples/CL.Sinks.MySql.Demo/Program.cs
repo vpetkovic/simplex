@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration.UserSecrets;
 
-#region Instatiations Examples
+#region Instantiations Examples
 /// <summary>
 /// Using Dependency Injection and connections specified in appsettings.json
 /// </summary>
@@ -18,12 +18,12 @@ var serviceProvider = new ServiceCollection()
     .BuildServiceProvider();
 
 /// <summary>
-/// Instatiating single connection 
+/// Instantiating single connection
 /// </summary>
 var singleConnection = new MySqlDataAccess(ConnectionStrings.Connections.FirstOrDefault());
 
 /// <summary>
-/// Instatiating multiple connections alongside some global settings such as connection timeout
+/// Instantiating multiple connections alongside some global settings such as connection timeout
 /// </summary>
 var multipleConnections = new MySqlDataAccess(new ConnectionSettings(ConnectionStrings.Connections)
 {
