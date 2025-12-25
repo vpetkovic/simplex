@@ -13,7 +13,7 @@ namespace CL.Sinks.PostgreSQL
         public ConnectionSettings ConnectionSettings => _connectionSettings;
         public IDbConnection ActiveConnection { get; private set; }
 
-        public PostgreSqlDataAccess(ConnectionSettings connectionSettings = null)
+        public PostgreSqlDataAccess(ConnectionSettings connectionSettings)
         {
             _connectionSettings = connectionSettings;
             ActiveConnection = new NpgsqlConnection(connectionSettings.DefaultConnection.ConnectionString);

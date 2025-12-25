@@ -13,7 +13,7 @@ namespace CL.Sinks.SqlServer
         public ConnectionSettings ConnectionSettings => _connectionSettings;
         public IDbConnection ActiveConnection { get; private set; }
 
-        public SqlDataAccess(ConnectionSettings connectionSettings = null)
+        public SqlDataAccess(ConnectionSettings connectionSettings)
         {
             _connectionSettings = connectionSettings;
             ActiveConnection = new SqlConnection(connectionSettings.DefaultConnection.ConnectionString);
